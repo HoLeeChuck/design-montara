@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Montara Boat Designer</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #sidebar {
+        width: 25%;
+        background-color: #ffffff;
+        padding: 20px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    #previewContainer {
+        flex: 1;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #1f2a3a;
+        margin-bottom: 20px;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #1f2a3a;
+        font-weight: bold;
+    }
+
+    select, input[type="checkbox"] {
+        margin-bottom: 15px;
+        background-color: #f9f9f9;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #0066cc;
+        color: #ffffff;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0050aa;
+    }
+
+    #previewContainer h2 {
+        color: #1f2a3a;
+        margin-bottom: 10px;
+    }
+
+    #boatPreview {
+        max-width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div id="sidebar">
+        <h1>Montara Boat Designer</h1>
+        <form id="boatForm">
+            <label for="color">Color Options:</label>
+            <select id="color">
+                <option value="Montara_Black-Auster">Black-Auster</option>
+                <option value="Montara_White-Auster">White-Auster</option>
+                <option value="Montara_Gunmetal-Flint-Auster">Gunmetal-Flint-Auster</option>
+                <option value="Montara_Black-Flint">Black-Flint</option>
+            </select><br>
+            <label for="rgb">RGB Option:</label>
+            <input type="checkbox" id="rgb"><br>
+            <label for="dualSub">Dual Sub Option:</label>
+            <input type="checkbox" id="dualSub"><br>
+        </form>
+    </div>
+
+    <div id="previewContainer">
+        <h2>Preview</h2>
+        <img id="boatPreview" src="" alt="Montara Boat Preview">
+    </div>
+</div>
+
+<script>
+    function updatePreview() {
+        var color = document.getElementById("color").value;
+        var rgb = document.getElementById("rgb").checked;
+        var dualSub = document.getElementById("dualSub").checked;
+
+        // Generate image filename based on selected options
+        var imageName = color;
+        if (dualSub) {
+            imageName += "-Dual-Sub";
+        }
+        if (rgb) {
+            imageName += "-RGB";
+        }
+        imageName += ".png"; // Change the extension if your images have a different format
+
+        // Set the image source
+        document.getElementById("boatPreview").src = "preview/" + imageName;
+    }
+
+    // Add event listeners to form elements
+    document.getElementById("color").addEventListener("change", updatePreview);
+    document.getElementById("rgb").addEventListener("change", updatePreview);
+    document.getElementById("dualSub").addEventListener("change", updatePreview);
+
+    // Initial preview update
+    updatePreview();
+</script>
+
+</body>
+</html>
