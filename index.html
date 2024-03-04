@@ -13,25 +13,19 @@
     }
 
     .container {
-        max-width: 1200px;
-        margin: 0 auto;
         padding: 20px;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: center;
     }
 
-    #sidebar {
-        width: 25%;
-        background-color: #ffffff;
-        padding: 20px;
-        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    #previewContainer {
-        flex: 1;
-        padding: 20px;
+    #sidebar, #previewContainer {
+        width: 100%;
         background-color: #ffffff;
         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        padding: 20px;
+        box-sizing: border-box;
     }
 
     h1 {
@@ -51,7 +45,7 @@
         font-weight: bold;
     }
 
-    select, input[type="checkbox"] {
+    select {
         margin-bottom: 15px;
         background-color: #f9f9f9;
         border: none;
@@ -61,11 +55,12 @@
         box-sizing: border-box;
     }
 
-    button {
+    .toggle-button {
         background-color: #0066cc;
         color: #ffffff;
         border: none;
-        padding: 15px 20px;
+        padding: 5px;
+        margin: 10px;
         border-radius: 5px;
         cursor: pointer;
         width: 100%;
@@ -74,7 +69,7 @@
         transition: background-color 0.3s ease;
     }
 
-    button:hover {
+    .toggle-button:hover {
         background-color: #0050aa;
     }
 
@@ -87,6 +82,18 @@
         max-width: 100%;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    @media screen and (min-width: 768px) {
+        .container {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        #sidebar, #previewContainer {
+            width: 45%;
+        }
     }
 </style>
 </head>
@@ -102,10 +109,8 @@
                 <option value="Montara_Gunmetal-Flint-Auster">Gunmetal-Flint-Auster</option>
                 <option value="Montara_Black-Flint">Black-Flint</option>
             </select><br>
-            <label for="rgb">RGB Option:</label>
-            <input type="checkbox" id="rgb"><br>
-            <label for="dualSub">Dual Sub Option:</label>
-            <input type="checkbox" id="dualSub"><br>
+            <button type="button" id="rgbButton" class="toggle-button">RGB: No</button><br>
+            <button type="button" id="dualSubButton" class="toggle-button">Dual Sub: No</button>
         </form>
     </div>
 
@@ -116,10 +121,34 @@
 </div>
 
 <script>
+    var colorSelect = document.getElementById("color");
+    var rgbButton = document.getElementById("rgbButton");
+    var dualSubButton = document.getElementById("dualSubButton");
+
+    colorSelect.addEventListener("change", updatePreview);
+
+    rgbButton.addEventListener("click", function() {
+        toggleButtonState(rgbButton);
+        updatePreview();
+    });
+
+    dualSubButton.addEventListener("click", function() {
+        toggleButtonState(dualSubButton);
+        updatePreview();
+    });
+
+    function toggleButtonState(button) {
+        if (button.textContent.includes("Yes")) {
+            button.textContent = button.textContent.replace("Yes", "No");
+        } else {
+            button.textContent = button.textContent.replace("No", "Yes");
+        }
+    }
+
     function updatePreview() {
-        var color = document.getElementById("color").value;
-        var rgb = document.getElementById("rgb").checked;
-        var dualSub = document.getElementById("dualSub").checked;
+        var color = colorSelect.value;
+        var rgb = rgbButton.textContent.includes("Yes");
+        var dualSub = dualSubButton.textContent.includes("Yes");
 
         // Generate image filename based on selected options
         var imageName = color;
@@ -134,11 +163,6 @@
         // Set the image source
         document.getElementById("boatPreview").src = "preview/" + imageName;
     }
-
-    // Add event listeners to form elements
-    document.getElementById("color").addEventListener("change", updatePreview);
-    document.getElementById("rgb").addEventListener("change", updatePreview);
-    document.getElementById("dualSub").addEventListener("change", updatePreview);
 
     // Initial preview update
     updatePreview();
